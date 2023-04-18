@@ -15,15 +15,15 @@ console.log("Hi " + userName + "!");
 
 //
 
-let operations = [];
+let operation = [];
 let whatOperation = readlineSync.question(
   `What operation would you like to perform ${userName}? `
 );
 // console.log(whatOperation);
-operations.push(whatOperation);
-console.log(operations);
+operation.push(whatOperation);
+console.log(operation);
 
-for (let op of operations) {
+for (let op of operation) {
   switch (op) {
     case "/":
       console.log("Division it is!");
@@ -44,15 +44,47 @@ for (let op of operations) {
   }
 }
 
-integers = [];
+let integers = [];
 let firstInt = readlineSync.questionInt(`Please enter the first number. `);
 console.log(firstInt);
 integers.push(firstInt);
 
-for (let int of integers) {
-  if (Number.isInteger(parseInt(int))) {
-    console.log("This is an integer");
-  } else {
-    console.log("Invalid input. Please input an integer.");
-  }
+let intsToBeCalc = [];
+
+if (Number.isInteger(parseInt(firstInt))) {
+  console.log("This is an integer");
 }
+
+let secondInt = readlineSync.questionInt(`Please enter the second number. `);
+console.log(secondInt);
+integers.push(secondInt);
+
+if (Number.isInteger(parseInt(secondInt))) {
+  console.log("This is an integer");
+}
+
+const calculate = (f, s, o) => {
+  let result;
+  switch (o) {
+    case "/":
+      result = f / s;
+      break;
+    case "*":
+      result = f * s;
+      break;
+    case "+":
+      result = f + s;
+      break;
+    case "-":
+      result = f - s;
+      break;
+    default:
+      console.error(`Sorry! Something went wrong with the calculation!`);
+      return null;
+  }
+  console.log(`${f} ${o} ${s} = ${result}`);
+  return result;
+};
+
+let userCal = calculate(firstInt, secondInt, operation[0]);
+console.log(userCal);
