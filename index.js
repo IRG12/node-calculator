@@ -8,83 +8,52 @@ let readlineSync = require("readline-sync");
 // 6.) After a valid number is entered, ask the user, "Please enter the second number". Perform the same error handling as before
 // 7.) Then create a function to perform the proper math operation and print the result as: "The result is: X" where "X" is the actual result
 
-// prompt the name question
-// Wait for user's response.
-let userName = readlineSync.question("May I have your name? ");
-console.log("Hi " + userName + "!");
-
-//
-
-let operation = [];
-let whatOperation = readlineSync.question(
-  `What operation would you like to perform ${userName}? `
-);
-// console.log(whatOperation);
-operation.push(whatOperation);
-console.log(operation);
-
-for (let op of operation) {
-  switch (op) {
-    case "/":
-      console.log("Division it is!");
-      break;
-    case "*":
-      console.log("multiplication it is!");
-      break;
-    case "+":
-      console.log("addition it is!");
-      break;
-    case "-":
-      console.log("subtraction it is!");
-      break;
-    default:
-      console.log(
-        `Sorry, ${op} is an invalid operation. Please enter one of the following: '/', '*', '+', '-'.`
-      );
+const getOperation = (val) => {
+  const operation = readlineSync.question(`What would you like to perform? `);
+  if (
+    operation === "+" ||
+    operation === "-" ||
+    operation === "*" ||
+    operation === "/"
+  ) {
+    return operation;
+  } else {
+    return getOperation(val);
   }
-}
+};
+let selectedOperation = getOperation();
 
-let integers = [];
-let firstInt = readlineSync.questionInt(`Please enter the first number. `);
-console.log(firstInt);
-integers.push(firstInt);
+let val1;
+let val2;
 
-let intsToBeCalc = [];
+const getNumber = (val1, val2) => {
+  const firstNum = isNaN(val1)
+    ? readlineSync.questionInt(`Please enter the first number. `)
+    : getNumber(val1, val2);
 
-if (Number.isInteger(parseInt(firstInt))) {
-  console.log("This is an integer");
-}
+  const secondNum = isNaN(val2)
+    ? readlineSync.questionInt(`Please enter the second number. `)
+    : getNumber(val2);
 
-let secondInt = readlineSync.questionInt(`Please enter the second number. `);
-console.log(secondInt);
-integers.push(secondInt);
-
-if (Number.isInteger(parseInt(secondInt))) {
-  console.log("This is an integer");
-}
-
-const calculate = (f, s, o) => {
-  let result;
-  switch (o) {
-    case "/":
-      result = f / s;
-      break;
-    case "*":
-      result = f * s;
-      break;
-    case "+":
-      result = f + s;
-      break;
-    case "-":
-      result = f - s;
-      break;
-    default:
-      console.error(`Sorry! Something went wrong with the calculation!`);
-      return null;
-  }
-  console.log(`${f} ${o} ${s} = ${result}`);
-  return result;
+  return [firstNum, secondNum];
 };
 
-let userCal = calculate(firstInt, secondInt, operation[0]);
-console.log(userCal);
+const [firstInt, secondInt] = getNumber(val1, val2);
+
+const calculate = (f, s, o) => {
+  switch (o) {
+    case "/":
+      return f / s;
+    case "*":
+      return f * s;
+    case "+":
+      return f + s;
+    case "-":
+      return f - s;
+  }
+};
+
+console.log(
+  `${firstInt} ${selectedOperation} ${secondInt} =`,
+  calculate(firstInt, secondInt, selectedOperation)
+);
